@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -38,7 +39,7 @@ public class AdminController {
 
     @GetMapping("/new")
     public String newPerson(Model model){
-        Set<Role> roles = userService.getRoles();
+        List<Role> roles = userService.getRoles();
         model.addAttribute("roles", roles);
         User user = new User();
         model.addAttribute("user", user);
@@ -61,7 +62,7 @@ public class AdminController {
         if(ids == null) System.out.println("Cavabanga");
         int id = Integer.parseInt(ids);
         model.addAttribute("user", userService.show(id));
-        Set<Role> roles = userService.getRoles();
+        List<Role> roles = userService.getRoles();
         model.addAttribute("roles", roles);
         return "admin/edit";
     }

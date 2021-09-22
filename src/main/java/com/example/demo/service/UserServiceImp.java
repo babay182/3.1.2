@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.UserDao;
+import com.example.demo.dao.RoleRepository;
+import com.example.demo.dao.UserRepository;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,18 +9,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.util.Set;
+import java.util.List;
 
 @Service
 @Transactional
 public class UserServiceImp implements UserService {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userDao;
+
+    @Autowired
+    private RoleRepository roleDao;
 
     @Override
     public User show(long id) {
-        return userDao.show(id);
+        return userDao.findById(id).get();
     }
 
     @Override
@@ -28,38 +32,39 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Set<User> index() {
-        return userDao.index();
+    public List<User> index() {
+        return userDao.findAll();
     }
 
     @Override
     public void delete(long id) {
-        userDao.delete(id);
+        userDao.deleteById(id);
     }
 
     @Override
     public void update(long id, User newUser) {
-        userDao.update(id, newUser);
+        newUser.setId(id);
+        userDao.save(newUser);
     }
 
     @Override
-    public Set<Role> getRoles() {
-        return userDao.getRoles();
+    public List<Role> getRoles() {
+        return roleDao.findAll();
     }
 
     @Override
     public void addRole(Role role) {
-        userDao.addRole(role);
+        roleDao.save(role);
     }
 
     @Override
     public Role getRole(long id) {
-        return userDao.getRole(id);
+        return roleDao.findById(id).get();
     }
 
     @Override
     public User getUserByName(String userName) {
-        return userDao.getUserByName(userName);
+        return userDao.findByName(userName);
     }
 
 //    public Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {

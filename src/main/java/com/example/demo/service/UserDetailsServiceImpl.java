@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dao.UserDao;
+
+import com.example.demo.dao.UserRepository;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userDao;
 
     public Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
         return roles.stream().map(e->new SimpleGrantedAuthority(e.getName())).collect(Collectors.toList());
@@ -29,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userDao.getUserByName(s);
+        User user = userDao.findByName(s);
         if(user == null){
             throw new UsernameNotFoundException(String.format("User %s not found", s));
         }
