@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
-import java.util.Set;
 
 
 @Controller
@@ -78,6 +77,7 @@ public class AdminController {
         userService.update(id, user);
         return "redirect:/admin";
     }
+
     @PostMapping("/delete")
     public String delete(@RequestParam(value = "id", required = false) Integer id){
         userService.delete(id);

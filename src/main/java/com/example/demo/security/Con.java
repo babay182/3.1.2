@@ -27,7 +27,7 @@ public class Con {
         userService.addRole(new Role("ROLE_ADMIN"));
         userService.addRole(new Role("ROLE_USER"));
         Set<Role> roles = new HashSet<>(userService.getRoles());
-        User user = new User("Admin", "Admin", 22, "nnss@jkhg");
+        User user = new User("$2a$12$YTKLT6btiBw0USx.s2a8BubFvWzJ8TQy55nIiTWdINJd/sc4hRN7u", "Admin", 22, "nnss@jkhg");
         for (Role role : roles) {
             user.addRole(role);
         }
