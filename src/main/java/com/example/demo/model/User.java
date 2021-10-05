@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,6 +25,9 @@ public class User {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
+    private String surname;
+
     @Column(name = "age")
     private int age;
 
@@ -35,9 +41,10 @@ public class User {
 
     public User(){}
 
-    public User(String password, String name, int age, String email) {
+    public User(String password, String name, String surname, int age, String email) {
         this.password = password;
         this.name = name;
+        this.surname = surname;
         this.age = age;
         this.email = email;
     }
@@ -47,6 +54,14 @@ public class User {
             roles = new HashSet<>();
         }
         roles.add(role);
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public long getId() {
@@ -92,7 +107,7 @@ public class User {
     }
 
     public String getRolesName() {
-        return roles.stream().map(el->el.getName()).collect(Collectors.joining (", "));
+        return roles.stream().map(el->el.nameNoPrefix()).collect(Collectors.joining (" "));
     }
 
     public Set<Role> getRoles() {
@@ -103,12 +118,13 @@ public class User {
         this.roles = roles;
     }
 
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", password='" + password + '\'' +
                 ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +
                 ", roles=" + roles +

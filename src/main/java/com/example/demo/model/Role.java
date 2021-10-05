@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 
 @Entity
@@ -33,5 +35,9 @@ public class Role {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String nameNoPrefix(){
+        return name.substring(5);
     }
 }

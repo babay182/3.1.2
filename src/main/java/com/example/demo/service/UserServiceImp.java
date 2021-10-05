@@ -42,10 +42,16 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void update(long id, User newUser) {
-        newUser.setId(id);
+    public void update(User newUser) {
+
         userDao.save(newUser);
     }
+
+//    @Override
+//    public void update(long id, User newUser) {
+//        newUser.setId(id);
+//        userDao.save(newUser);
+//    }
 
     @Override
     public List<Role> getRoles() {
@@ -67,7 +73,16 @@ public class UserServiceImp implements UserService {
         return userDao.findByName(userName);
     }
 
-//    public Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
+    @Override
+    public Role findByName(String name){
+        return roleDao.findByName(name);
+    }
+
+    @Override
+    public User findById(long id) {
+        return userDao.getById(id);
+    }
+    //    public Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
 //        return roles.stream().map(e->new SimpleGrantedAuthority(e.getName())).collect(Collectors.toList());
 //    }
 //

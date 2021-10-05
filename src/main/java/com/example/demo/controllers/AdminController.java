@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.security.Principal;
 import java.util.List;
 
 
@@ -24,7 +26,12 @@ public class AdminController {
     }
 
     @GetMapping
-    public String index(@RequestParam(value = "id", required = false) String idStr, Model model) {
+    public String index(Principal principal, @RequestParam(value = "id", required = false) String idStr, Model model) {
+        model.addAttribute("admin", userService.getUserByName(principal.getName()));
+        List<Role> roles = userService.getRoles();
+        model.addAttribute("roles", roles);
+        User newUser = new User();
+        model.addAttribute("newUser", newUser);
         if (idStr == null) {
             model.addAttribute("users", userService.index());
             return "admin/index";
@@ -67,14 +74,14 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute("user") User user
-            , @RequestParam(value = "id", required = false) Integer id
-            , @RequestParam(value = "rolesSelected", required = false) String[] roles){
+    public String update(User user, String[] roles){
+
         for (String role : roles) {
+            System.out.println(role);
             Role i = userService.getRole(Integer.parseInt(role));
             user.addRole(i);
         }
-        userService.update(id, user);
+        userService.update(user);
         return "redirect:/admin";
     }
 
@@ -84,4 +91,9 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/oneUser")
+    @ResponseBody
+    public User oneUser(Integer id){
+        return userService.findById(id);
+    }
 }
