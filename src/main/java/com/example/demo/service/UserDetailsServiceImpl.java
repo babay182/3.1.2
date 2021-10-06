@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-
 import com.example.demo.dao.UserRepository;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
@@ -12,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.Collection;
 import java.util.stream.Collectors;
 

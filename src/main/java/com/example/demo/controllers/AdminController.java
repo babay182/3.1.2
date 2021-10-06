@@ -9,13 +9,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.security.Principal;
 import java.util.List;
 
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping
 public class AdminController {
 
     private final UserService userService;
@@ -27,29 +26,19 @@ public class AdminController {
 
     @GetMapping
     public String index(Principal principal, @RequestParam(value = "id", required = false) String idStr, Model model) {
-        model.addAttribute("admin", userService.getUserByName(principal.getName()));
+        model.addAttribute("admin", userService.findByName(principal.getName()));
         List<Role> roles = userService.getRoles();
         model.addAttribute("roles", roles);
         User newUser = new User();
         model.addAttribute("newUser", newUser);
         if (idStr == null) {
             model.addAttribute("users", userService.index());
-            return "admin/index";
+            return "index";
         } else {
             int id = Integer.parseInt(idStr);
             model.addAttribute("user", userService.show(id));
-            return "admin/show";
+            return "user";
         }
-    }
-
-
-    @GetMapping("/new")
-    public String newPerson(Model model){
-        List<Role> roles = userService.getRoles();
-        model.addAttribute("roles", roles);
-        User user = new User();
-        model.addAttribute("user", user);
-        return "admin/new";
     }
 
     @PostMapping("/new")
@@ -60,17 +49,7 @@ public class AdminController {
             user.addRole(i);
         }
         userService.save(user);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/edit")
-    public String edit(Model model, @RequestParam(value = "id", required = false) String ids){
-        if(ids == null) System.out.println("Cavabanga");
-        int id = Integer.parseInt(ids);
-        model.addAttribute("user", userService.show(id));
-        List<Role> roles = userService.getRoles();
-        model.addAttribute("roles", roles);
-        return "admin/edit";
+        return "redirect:/";
     }
 
     @PostMapping("/update")
@@ -82,18 +61,29 @@ public class AdminController {
             user.addRole(i);
         }
         userService.update(user);
-        return "redirect:/admin";
+        return "redirect:/";
     }
 
     @PostMapping("/delete")
     public String delete(@RequestParam(value = "id", required = false) Integer id){
         userService.delete(id);
-        return "redirect:/admin";
+        return "redirect:/";
     }
 
     @GetMapping("/oneUser")
     @ResponseBody
     public User oneUser(Integer id){
         return userService.findById(id);
+    }
+
+    @GetMapping("/user")
+    public String userProfile(Principal principal, Model model) {
+        model.addAttribute("user", userService.getUserByName(principal.getName()));
+        return "user";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
     }
 }

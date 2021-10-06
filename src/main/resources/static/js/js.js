@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log("ksdbfjhs")
+
     $('.eBtn').on('click', function (event) {
         event.preventDefault();
         var href = $(this).attr('href');
@@ -11,10 +11,22 @@ $(document).ready(function () {
             $('.myForm #age').val(user.age);
             $('.myForm #email').val(user.email);
             $('.myForm #roles').val(user.roles);
-            var rol = document.getElementById("roles")
-            console.log(rol)
-            // $('.myForm #roles').empty();
             $('.myForm #editModal').modal();
+        });
+    });
+
+    $('.dBtn').on('click', function (event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+
+        $.get(href, function (user, status) {
+            $('.myDelForm #id').val(user.id);
+            $('.myDelForm #name').val(user.name);
+            $('.myDelForm #surname').val(user.surname);
+            $('.myDelForm #age').val(user.age);
+            $('.myDelForm #email').val(user.email);
+            $('.myDelForm #roles').val(user.roles);
+            $('.myDelForm #deleteModal').modal();
         });
     });
 });

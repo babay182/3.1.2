@@ -7,8 +7,6 @@ import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import java.util.List;
 
 @Service
@@ -47,12 +45,6 @@ public class UserServiceImp implements UserService {
         userDao.save(newUser);
     }
 
-//    @Override
-//    public void update(long id, User newUser) {
-//        newUser.setId(id);
-//        userDao.save(newUser);
-//    }
-
     @Override
     public List<Role> getRoles() {
         return roleDao.findAll();
@@ -82,17 +74,4 @@ public class UserServiceImp implements UserService {
     public User findById(long id) {
         return userDao.getById(id);
     }
-    //    public Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
-//        return roles.stream().map(e->new SimpleGrantedAuthority(e.getName())).collect(Collectors.toList());
-//    }
-//
-//    @Override
-//    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-//        User user = userDao.getUserByName(s);
-//        if(user == null){
-//            throw new UsernameNotFoundException(String.format("User %s not found", s));
-//        }
-//        return new org.springframework.security.core.userdetails.User(user.getName(),
-//                user.getPassword(), getAuthorities(user.getRoles()));
-//    }
 }

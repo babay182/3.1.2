@@ -1,7 +1,5 @@
 package com.example.demo.service;
 
-
-
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 
@@ -12,7 +10,6 @@ public interface UserService {
     void save(User user);
     List<User> index();
     void delete(long id);
-//    void update(long id, User newUser);
     void update(User newUser);
     List<Role> getRoles();
     void addRole(Role role);
