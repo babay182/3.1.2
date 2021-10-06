@@ -26,7 +26,7 @@ public class AdminController {
 
     @GetMapping
     public String index(Principal principal, @RequestParam(value = "id", required = false) String idStr, Model model) {
-        model.addAttribute("admin", userService.findByName(principal.getName()));
+        model.addAttribute("admin", userService.getUserByName(principal.getName()));
         List<Role> roles = userService.getRoles();
         model.addAttribute("roles", roles);
         User newUser = new User();
