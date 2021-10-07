@@ -5,6 +5,8 @@ import com.example.demo.dao.UserRepository;
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -17,6 +19,9 @@ public class UserServiceImp implements UserService {
     private UserRepository userDao;
 
     @Autowired
+    private PasswordEncoder encoder;
+
+    @Autowired
     private RoleRepository roleDao;
 
     @Override
@@ -26,6 +31,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void save(User user) {
+        String pass = user.getPassword();
+        user.setPassword(encoder.encode(pass));
         userDao.save(user);
     }
 
@@ -41,7 +48,8 @@ public class UserServiceImp implements UserService {
 
     @Override
     public void update(User newUser) {
-
+        String pass = newUser.getPassword();
+        newUser.setPassword(encoder.encode(pass));
         userDao.save(newUser);
     }
 

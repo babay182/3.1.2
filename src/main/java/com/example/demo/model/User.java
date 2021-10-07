@@ -107,7 +107,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return name;
+        return email;
     }
 
     @Override
@@ -131,9 +131,7 @@ public class User implements UserDetails {
     }
 
     public void setPassword(String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encodedPassword = encoder.encode(password);
-        this.password = encodedPassword;
+        this.password = password;
     }
 
     public String getRolesName() {

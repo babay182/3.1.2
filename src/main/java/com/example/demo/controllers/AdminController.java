@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.model.Role;
 import com.example.demo.model.User;
+import com.example.demo.service.UserDetailsServiceImpl;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,27 +19,19 @@ import java.util.List;
 public class AdminController {
 
     private final UserService userService;
+    private final UserDetailsServiceImpl userServiceDetails;
 
-    @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, UserDetailsServiceImpl userServiceDetails) {
         this.userService = userService;
+        this.userServiceDetails = userServiceDetails;
     }
 
     @GetMapping
-    public String index(Principal principal, @RequestParam(value = "id", required = false) String idStr, Model model) {
-        model.addAttribute("admin", userService.getUserByName(principal.getName()));
-        List<Role> roles = userService.getRoles();
-        model.addAttribute("roles", roles);
-        User newUser = new User();
-        model.addAttribute("newUser", newUser);
-        if (idStr == null) {
-            model.addAttribute("users", userService.index());
-            return "index";
-        } else {
-            int id = Integer.parseInt(idStr);
-            model.addAttribute("user", userService.show(id));
-            return "user";
-        }
+    public String index(@ModelAttribute("newUser") User user, Model model, Principal principal) {
+        model.addAttribute("users", userService.index());
+        model.addAttribute("admin", userServiceDetails.loadUserByUsername(principal.getName()));
+        model.addAttribute("roles", userService.getRoles());
+        return "index";
     }
 
     @PostMapping("/new")
@@ -74,12 +67,6 @@ public class AdminController {
     @ResponseBody
     public User oneUser(Integer id){
         return userService.findById(id);
-    }
-
-    @GetMapping("/user")
-    public String userProfile(Principal principal, Model model) {
-        model.addAttribute("user", userService.getUserByName(principal.getName()));
-        return "user";
     }
 
     @GetMapping("/login")
